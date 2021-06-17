@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap-social/bootstrap-social.css';
 //index.css is imported after bootstrap becoz if you need to add custom css after bottstrap you can do that 
 import './index.css';
 import App from './App';
