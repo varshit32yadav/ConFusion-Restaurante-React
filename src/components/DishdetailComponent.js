@@ -65,17 +65,15 @@ import {Card,CardImg,CardBody,CardText,CardTitle} from 'reactstrap';
       console.log(props.dish);
               return(
             <div className="container">
-            <div className="row">
-
-            <div className="col-12 col-md-5 m-1">
+             <div className="row">
+               <div className="col-12 col-md-5 m-1">
                 <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
                 <RenderComments  dish={props.dish} />
                
-            </div>
-            
-            </div>
+               </div>
+               </div>
             </div>
         );
     }
