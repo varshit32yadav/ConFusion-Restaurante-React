@@ -31,7 +31,7 @@ render()
                 <div className="container">
                     <NavbarToggler onClick={this.toggleNav} // this to toggle on and off NAvlinks for medium screens and above . And for sm screens it will be hidden 
                     />
-                    <NavbarBrand className="mr-auto" href="/">
+                    <NavbarBrand  href="/">
                         <img src="assets/images/logo.png" height="30" width="41"
                         alt="Restorante Con Fusion" />
                     </NavbarBrand>

@@ -3,6 +3,7 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import Header from './HeaderComponent';
 import Menu from './MenuComponent';
+import DishDetail from './DishdetailComponent';
 import Footer from './FooterComponent';
 import { DISHES } from '../shared/dishes';
 import {COMMENTS} from '../shared/comments';
@@ -33,16 +34,24 @@ class Main extends Component {
                 promotions={this.state.promotions.filter((promotion)=> promotion.featured)[0]}
                 leaders={this.state.leaders.filter((leader)=>leader.featured)[0]}
            />
+        );                //match.params.dishId is a string which is converted to a base 10 integer
+      }                 //here we only require match object. History and location are not required
+      const DishWithId = ({match}) => {
+        return(
+            <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+              comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
         );
-      }
+      };
+
     return (
       <div>
         <Header />
         <Switch>
          <Route path="/home" component={Homepage} />
-         <Route path="/menu" component={()=> <Menu dishes={this.state.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
+         <Route exact path="/menu" component={()=> <Menu dishes={this.state.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
          />
-         <Route path="/contactus" component={Contact} //another way of passing a Comp. if you dont have any props to use in it 
+        <Route path='/menu/:dishId' component={DishWithId} />
+         <Route  exact path="/contactus" component={Contact} //another way of passing a Comp. if you dont have any props to use in it 
          />
          <Redirect to="/home" // if you didnt find above route paths the you will be directed to home 
          />

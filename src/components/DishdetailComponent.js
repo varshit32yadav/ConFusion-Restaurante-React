@@ -1,5 +1,6 @@
 import React from 'react';
-import {Card,CardImg,CardBody,CardText,CardTitle} from 'reactstrap';
+import {Card,CardImg,CardBody,CardText,CardTitle,BreadcrumbItem,Breadcrumb} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 
      //dish  is recieved in form f props
@@ -26,14 +27,14 @@ import {Card,CardImg,CardBody,CardText,CardTitle} from 'reactstrap';
                 <div></div>
              );
      }
-     function RenderComments({dish}) {
+     function RenderComments({comments}) {
          console.log("inside render comments")
          //console.log(comments)
-        if (dish == null || dish.comments == null) {
+        if (comments == null) {
             return (<div></div>)
         }
         // This part allows you to retrieve the list of information to be displayed 
-        const c = dish.comments.map((comment) => {
+        const c = comments.map((comment) => {
             return (
                 <li key={comment.id}>
                     <p>{comment.comment}</p>
@@ -65,12 +66,21 @@ import {Card,CardImg,CardBody,CardText,CardTitle} from 'reactstrap';
       console.log(props.dish);
               return(
             <div className="container">
+                <div className="row">
+                <Breadcrumb>
+                <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12"> 
+                    <h3>{props.dish.name}</h3>
+                </div>
+                </div>
              <div className="row">
                <div className="col-12 col-md-5 m-1">
                 <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                <RenderComments  dish={props.dish} />
+                <RenderComments  comments={props.comments} />
                
                </div>
                </div>
