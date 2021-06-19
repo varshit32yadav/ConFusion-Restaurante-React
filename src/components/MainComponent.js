@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 import Header from './HeaderComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
@@ -42,7 +43,12 @@ class Main extends Component {
               comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
         );
       };
-
+      const Aboutus=()=>
+      {
+        return (
+          <About leaders={this.state.leaders}/>
+        );
+      }
     return (
       <div>
         <Header />
@@ -53,6 +59,7 @@ class Main extends Component {
         <Route path='/menu/:dishId' component={DishWithId} />
          <Route  exact path="/contactus" component={Contact} //another way of passing a Comp. if you dont have any props to use in it 
          />
+         <Route path="/aboutus" component={Aboutus}/>
          <Redirect to="/home" // if you didnt find above route paths the you will be directed to home 
          />
         </Switch>
