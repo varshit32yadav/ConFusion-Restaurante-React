@@ -1,8 +1,49 @@
-import React from 'react';
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React,{Component} from 'react';
+import { Breadcrumb, BreadcrumbItem,Button,Form,Label,Input,FormGroup,Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-function Contact(props) {
+class Contact extends Component
+{
+  constructor(props)
+  {
+      super(props);
+      this.state={
+          firstname:'',
+          lastname:'',
+          telnum:'',
+          email:'',
+          agree:false,
+          contactType:'Tel.',
+          message:''
+      }
+      this.handleSubmit=this.handleSubmit.bind(this);
+      this.handleInputChange=this.handleInputChange.bind(this);
+  }
+
+    //it is invoked on any change in any input value in the form
+    //(event) parameter carries which particular input has been changed
+    handleInputChange(event){
+     const target=event.target;
+     const value=target.type === 'checkbox'? target.checkbox:target.value;
+     // Imp-> name attribute in form should be same as the values of form defined in state 
+     const name=target.name;
+      this.setState(
+          {
+              [name]:value
+          }
+      )
+    }
+    handleSubmit(event){
+        //JSON.stringify(this.state) gives you the current updated state of the react component 
+        console.log('Current State is: ' + JSON.stringify(this.state));
+        alert("current state is :" + JSON.stringify(this.state));
+        
+        event.preventDefault();
+        //to prevent from going to the next page after submission we us this
+    }
+
+   render()
+   {
     return(
         <div className="container">
              <div className="row">
@@ -41,8 +82,78 @@ function Contact(props) {
                     </div>
                 </div>
             </div>
+            <div className="row row-content">
+              <div className="col-12">
+                <h3>Send Us Your feedback</h3>
+              </div>
+              <div className="col-12 col-md-9"> 
+               <Form OnSubmit={this.handleSubmit}>
+                   <FormGroup row  //this allows you to use bootstrap grid inside the form
+                   >
+                     <Label htmlFor="firstname" md={2}>First Name</Label>
+                     <Col md={10}  // giving next 10 columns in the row to input type 
+                     >
+                     <Input type="text" id="firstname" name="firstname" placeholder="First Name"
+                              value={this.state.firstname} //(tying the Value to the controlled component state. so now this becomes the controlled form now as chenges made here will be reflected to react comp. )
+                              OnChange={this.handleInputChange}
+                     />
+                     </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                     <Label htmlFor="lastname" md={2}>Last Name</Label>
+                     <Col md={10} > 
+                     <Input type="text" id="lastname" name="lastname" placeholder="Last Name"
+                      value={this.state.lastname} OnChange={this.handleInputChange} />
+                     </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                    <Label htmlFor="telnum" md={2}>Contact Tel.</Label>
+                    <Col md={10}>
+                        <Input type="tel" id="telnum" placeholder="TEL. number" name="telnum" value={this.state.telnum} OnChange={this.handleInputChange}/>
+                    </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                    <Label htmlFor="email" md={2}>Email</Label>
+                    <Col md={10}>
+                        <Input type="email" id="email" placeholder="Email" name="email" value={this.state.email} OnChange={this.handleInputChange}/>
+                    </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                   
+                    <Col md={{size:6, offset:2}}>
+                        <FormGroup check>
+                            <Label check>
+                                <Input type="checkbox" id="check" name="agree" checked={this.state.agree} OnChange={this.handleInputChange}/>
+                                {' '} <strong>May we Contact you?</strong>
+                            </Label>
+
+                        </FormGroup>
+                    </Col>
+                    <Col md={{size:3, offset:1}}>
+                        <Input type="select" name="contactType" value={this.state.contactType} OnChange={this.handleInputChange} >
+                            <option>Tel.</option>
+                            <option>Email</option>
+                        </Input>
+                    </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                        <Label htmlFor="message" md={2}>Feedback</Label>
+                        <Col md={10}>
+                            <Input type="textarea" id="message" name="message" rows="12" value={this.state.feeedback} OnChange={this.handleInputChange}/>
+                        </Col>
+                   </FormGroup>
+                   <FormGroup row>
+                        <Col md={{size:10,offset:2}}>
+                            <Button type="submit" id="submit" color="primary">Send Feedback </Button>
+                        </Col>
+                   </FormGroup>
+
+               </Form>
+              </div>
+            </div>
         </div>
     );
+   }
 }
 
 export default Contact;

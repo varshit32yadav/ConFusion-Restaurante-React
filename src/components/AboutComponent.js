@@ -1,36 +1,34 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-function Renderleader({leaders})
-     {
-        const  leader=leaders.map((lead)=>{
-            return(
-             <div className="col-12 m-2 ">
-             <Media key={lead.id} tag="li">
-              <Media left  middle className="mr-1">
-                  <Media object src={lead.image} alt={lead.name} />
-              </Media>
-              <Media body className="ml-2">
-                  <Media heading>{lead.name}
-                  <h6>{lead.designation}</h6>
-                  </Media>
-                  
-                  <p className="p-1">
-                      {lead.description}
-                  </p>
-              </Media>
-             </Media>
-             </div>
-            );
-     });
-     return (
-        <div>
-            {leader}
+
+function RenderLeader({leader}) {
+    return (
+        <div key={leader.id} className="media mt-3"> 
+            <Media left>
+                <Media object src={leader.image}  alt={leader.name}></Media>
+            </Media>
+            <Media body className="ml-5">
+                <Media heading>{leader.name}</Media>
+                <p>{leader.designation}</p>
+                <p>{leader.description}</p>
+                <p>&nbsp;</p>
+            </Media>     
         </div>
-            
-     );
-     }
+    );
+}
+
 function About(props) {
+
+    const leaders = props.leaders.map((leader) => {
+        return (
+            <>
+            <RenderLeader leader={leader} />
+            
+          </>
+        );
+    });
+
     return(
         <div className="container">
             <div className="row">
@@ -49,7 +47,7 @@ function About(props) {
                     <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
                     <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
                 </div>
-                <div className="col-12 col-md-6">
+                <div className="col-12 col-md-5">
                     <Card>
                         <CardHeader className="bg-primary text-white">Facts At a Glance</CardHeader>
                         <CardBody>
@@ -85,11 +83,10 @@ function About(props) {
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-
                 <div className="col-12">
-                 <Media list>
-                 <Renderleader leaders={props.leaders}/>
-                 </Media>
+                    <Media list>
+                        {leaders}
+                    </Media>
                 </div>
             </div>
         </div>
