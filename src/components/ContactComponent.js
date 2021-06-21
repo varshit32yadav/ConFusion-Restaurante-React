@@ -21,7 +21,8 @@ class Contact extends Component
                   firstname: false,
                   lastname:false,
                   telnum:false,
-                  email:false
+                  email:false,
+                  message:false
           }
       }
       this.handleSubmit=this.handleSubmit.bind(this);
@@ -51,7 +52,7 @@ class Contact extends Component
         //to prevent from going to the next page after submission we us this
     }
 
-        //indicate the particular filed has been modified mentioned in touched
+        //indicate the particular filed in touched array  has been modified mentioned in touched
     handleBlur=(field)=>(evt)=>{
         this.setState({ //
             touched:{...this.state.touched, [field]:true} //whichever input box has been modified set that to true
@@ -59,13 +60,14 @@ class Contact extends Component
     }
 
     //we will validate each time the form is re renderd for errors
-    validate(firstname,lastname,telnum,email){
+    validate(firstname,lastname,telnum,email,message){
         // errors will contain mssgs corresponding to the above 4 values
         const errors={
             firstname:'',
             lastname:'',
             telnum:'',
             email:'',
+            message:''
         };
             if (this.state.touched.firstname && firstname.length < 3)
             errors.firstname = 'First Name should be >= 3 characters';
@@ -82,17 +84,19 @@ class Contact extends Component
             errors.telnum="all numbers should be there ";
             if(telnum.length===10)
                  errors.telnum=" length to be 10";
+        const em=/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        if(this.state.touched.email && !em.test(email))   
+            errors.email="please enter valid email";
 
-        if(this.state.touched.email && email.split('').filter((x)=>x==='@').length !==1)   
-            errors.email="email should contain @ symbol";
-        
+        if(this.state.touched.message && message.split(' ').filter((x)=>x).length < 10)
+            errors.message="minimum words should be 5 ";
         return errors;
         // function will be invoked in render() becoz evrytime change in input form will re-render
-        }
+    }
     
    render()
    {              // we will supply the current values in the sate of firsrtname,telnum, eamial to validate function and is displaye <FormFeedback> right below input box
-    const errors= this.validate(this.state.firstname,this.state.lastname,this.state.telnum,this.state.email);
+    const errors= this.validate(this.state.firstname,this.state.lastname,this.state.telnum,this.state.email,this.state.message);
     return(
         <div className="container">
              <div className="row">
@@ -221,7 +225,11 @@ class Contact extends Component
                                     <Input type="textarea" id="message" name="message"
                                         rows="12"
                                         value={this.state.message}
+                                        valid={errors.message===''}
+                                        invalid={errors.message!==''}
+                                        onBlur={this.handleBlur('message')}
                                         onChange={this.handleInputChange}></Input>
+                                        <FormFeedback>{errors.message}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
