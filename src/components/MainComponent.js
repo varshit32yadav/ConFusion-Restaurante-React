@@ -21,9 +21,7 @@ const mapStateToProps = state => {
 
 class Main extends Component {
 
-  constructor(props) {
-    super(props);
-  }
+  
  
 
   render() {
@@ -55,12 +53,13 @@ class Main extends Component {
          <Route path="/home" component={Homepage} />
          <Route exact path="/menu" component={()=> <Menu dishes={this.props.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
          />
-        <Route path='/menu/:dishId' component={DishWithId} />
+        <Route path='/menu/:dishId' component={DishWithId}  />
          <Route  exact path="/contactus" component={Contact} //another way of passing a Comp. if you dont have any props to use in it 
          />
          <Route path="/aboutus" component={Aboutus}/>
          <Redirect to="/home" // if you didnt find above route paths the you will be directed to home 
          />
+        
         </Switch>
         <Footer/>
 
