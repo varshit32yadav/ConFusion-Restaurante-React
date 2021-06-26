@@ -24,8 +24,11 @@ class CommentForm extends Component {
     }
 
     handleCommentFormSubmit(values) {
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        //console.log("Current State is: " + JSON.stringify(values));
+        //alert("Current State is: " + JSON.stringify(values));
+        
+        // passing parameters to addComment function on submitting the form (yaha se ganga ji nikli hai )
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     toggleCommentFormModal() {
@@ -154,7 +157,8 @@ function RenderDish({dish}) {
     }
 }
 
-function RenderComments({dish, comments}){
+function RenderComments({comments,addComment,dishId}){
+      console.log(addComment);
     if (comments == null) {
             return (<div></div>)
     }
@@ -179,7 +183,8 @@ function RenderComments({dish, comments}){
             <ul className='list-unstyled'>
                     {cmnts}
             </ul>
-            <CommentForm />
+            
+            <CommentForm  dishId={dishId} addComment={addComment}/>
         </div>
     )
 }
@@ -207,7 +212,10 @@ const DishDetail = (props) => {
                 <RenderDish dish={props.dish} />
             </div>
             <div className="col-12 col-md-5 m-1">
-                <RenderComments comments={props.comments} />
+                <RenderComments comments={props.comments}
+                   addComment={props.addComment}    
+                   dishId={props.dish.id}  //we need this as comments passed itself doesnot no for which DIsh they are passed 
+                   />
             </div>
         </div>
         </div>

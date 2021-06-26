@@ -8,9 +8,12 @@ import DishDetail from './DishdetailComponent';
 import Footer from './FooterComponent';
 import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
+// we need this (addComment) action creator function in order to obtain an action JS object which then  dispatch to the store by calling store.dispatch();
+import { addComment } from '../redux/ActionCreators';
 
 //this will map redux store state to the props that we will use in our main component
-const mapStateToProps = state => {
+
+const mapStateToProps = state => { //when you use Connect() at the bottom it will recieve state as it s parameter
   return {
     dishes: state.dishes,
     comments: state.comments,
@@ -19,6 +22,13 @@ const mapStateToProps = state => {
   }
 }
 
+// mapDispatchToProps is something that you will use to provide the action creators as props to your component.
+
+ const mapDispatchToProps=(dispatch)=>({    //when you use Connect() at the bottom it will recieve dispatch as it s parameter
+     
+     addComment:(dishId,rating,author,comment)=>dispatch(addComment(dishId,rating,author,comment))
+//now this addComment is available as a prop to main COmp(which will store current changed state).  # if you r confuse with the name justhover over them n you will get info about it .
+    });
 class Main extends Component {
 
   
@@ -37,7 +47,9 @@ class Main extends Component {
       const DishWithId = ({match}) => {
         return(
             <DishDetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
-              comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+              comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} 
+              addComment={this.props.addComment} 
+              />
         );
       };
       const Aboutus=()=>
@@ -69,4 +81,4 @@ class Main extends Component {
 }
 //connect will connect MAin componenet to the REdux store  . So now we can take redux store state as a prop in this component 
 //wtuh the help of withrouter Main will connect with React Router. 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Main));
