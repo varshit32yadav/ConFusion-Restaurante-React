@@ -28,6 +28,7 @@ class CommentForm extends Component {
         //alert("Current State is: " + JSON.stringify(values));
         
         // passing parameters to addComment function on submitting the form (yaha se ganga ji nikli hai )
+        // 
         this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
@@ -39,7 +40,7 @@ class CommentForm extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <>
                 <Button outline onClick={this.toggleCommentFormModal}>
                     <span className="fa fa-pencil fa-lg"></span> Submit Comment
                 </Button>
@@ -130,7 +131,7 @@ class CommentForm extends Component {
                         </LocalForm>
                     </ModalBody>
                 </Modal>
-            </React.Fragment>
+            </>
         );
     }
 }
