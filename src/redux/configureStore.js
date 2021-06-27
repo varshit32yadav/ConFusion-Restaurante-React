@@ -6,6 +6,8 @@ import { Comments } from "./comments";
 import { Dishes } from "./dishes";
 import { Leaders } from "./leaders";
 import { Promotions } from "./promotions";
+import { InitialFeedback } from "./forms";
+import { createForms } from "react-redux-form";
 
 export const ConfigureStore=()=>{
     const store=createStore(
@@ -14,7 +16,10 @@ export const ConfigureStore=()=>{
             dishes:Dishes,
             leaders:Leaders,
             comments:Comments,
-            promotions:Promotions
+            promotions:Promotions,
+            ...createForms({
+                feedback:InitialFeedback
+            })
 
         }),
         //to enhance our store 

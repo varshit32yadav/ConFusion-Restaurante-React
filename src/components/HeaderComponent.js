@@ -33,7 +33,7 @@ class Header extends Component
     }
     handleLogin(event)
     {
-      this.toggleModal(); //close the modal ones the form is submitted
+      this.toggleModal(); //close the modal ones the form is submitted0
       alert("Username: "+ this.username.value + "Password: "+ this.password.value + "Remember: "+ this.remember.checked);
       // here we r using the  values of the form directly from the Dom
       event.preventDefault();

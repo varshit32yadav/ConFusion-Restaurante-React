@@ -10,7 +10,7 @@ import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 // we need this (addComment) action creator function in order to obtain an action JS object which then  dispatch to the store by calling store.dispatch();
 import { addComment,fetchDishes } from '../redux/ActionCreators';
-
+import { actions } from 'react-redux-form';
 //this will map redux store state to the props that we will use in our main component
 
 const mapStateToProps = state => { //when you use Connect() at the bottom it will recieve state as it s parameter
@@ -31,7 +31,9 @@ const mapStateToProps = state => { //when you use Connect() at the bottom it wil
     
 
 //new prop(fetchDishes which when invoked to will result in call to dispatch fetchDishes thunk)
-fetchDishes: () => { dispatch(fetchDishes())}
+fetchDishes: () => { dispatch(fetchDishes())},
+
+ resetFeedbackForm:()=>{(dispatch(actions.reset('feedback')))}
 });
 
 class Main extends Component {
@@ -86,7 +88,7 @@ class Main extends Component {
          <Route exact path="/menu" component={()=> <Menu dishes={this.props.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
          />
         <Route path='/menu/:dishId' component={DishWithId}  />
-         <Route  exact path="/contactus" component={Contact} //another way of passing a Comp. if you dont have any props to use in it 
+         <Route  exact path="/contactus" component={()=><Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} //another way of passing a Comp. if you dont have any props to use in it 
          />
          <Route path="/aboutus" component={Aboutus}/>
          <Redirect to="/home" // if you didnt find above route paths the you will be directed to home 
