@@ -26,7 +26,19 @@ export const fetchDishes = () => (dispatch) => {
 
     dispatch(dishesLoading());
     return fetch(baseUrl+'dishes')   //ones the dishes are obtained then it will be pushed to redux store ;
-    .then(response=>response.json()).then(dishes=>dispatch(addDishes(dishes)))  ;
+    .then(response=>{
+        //(server se baatcheet shuru ho gayi hai but promise proxy value failed to get request )
+        if(response.ok) return response;
+        else{
+            var error=new Error('Error'+response.status +':'+response.statusText);
+            error.response=response;
+            throw error;
+        }     
+        //(if sever even itself doesnot responds for even having a communincation(i.e when your server is shut(closed)) then use error handler for that )
+    }, error=>{
+         var errmess=new Error(error.message);
+         throw errmess;
+    } ).then(response=>response.json()).then(dishes=>dispatch(addDishes(dishes))).catch(error=>dispatch(dishesFailed(error.message)))  ;
 
  
 }
@@ -46,11 +58,24 @@ export const addDishes = (dishes) => ({
 });
 
 //setting up thunk to fetch comment 
-
 export const fetchComments = () => (dispatch) => {    
     return fetch(baseUrl + 'comments')
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+      })
     .then(response => response.json())
-    .then(comments => dispatch(addComments(comments)));
+    .then(comments => dispatch(addComments(comments)))
+    .catch(error => dispatch(commentsFailed(error.message)));
 };
 
 export const commentsFailed = (errmess) => ({
@@ -68,8 +93,22 @@ export const fetchPromos = () => (dispatch) => {
     dispatch(promosLoading());
 
     return fetch(baseUrl + 'promotions')
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+      })
     .then(response => response.json())
-    .then(promos => dispatch(addPromos(promos)));
+    .then(promos => dispatch(addPromos(promos)))
+    .catch(error => dispatch(promosFailed(error.message)));
 }
 
 export const promosLoading = () => ({
