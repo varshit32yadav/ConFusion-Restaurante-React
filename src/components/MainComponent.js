@@ -13,6 +13,7 @@ import { postComment,fetchComments,fetchDishes, fetchPromos } from '../redux/Act
 import { actions } from 'react-redux-form';
 //this will map redux store state to the props that we will use in our main component
 
+import {TransitionGroup,CSSTransition} from 'react-transition-group';
 const mapStateToProps = state => { //when you use Connect() at the bottom it will recieve state as it s parameter
   return {
     dishes: state.dishes,
@@ -90,7 +91,9 @@ class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
+        <TransitionGroup>
+          <CSSTransition key={this.props.location.key} classNames="page" timeout={300} >
+          <Switch>
          <Route path="/home" component={Homepage} />
          <Route exact path="/menu" component={()=> <Menu dishes={this.props.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
          />
@@ -102,6 +105,10 @@ class Main extends Component {
          />
         
         </Switch>
+          </CSSTransition>
+       
+        </TransitionGroup>
+
         <Footer/>
 
       </div>
