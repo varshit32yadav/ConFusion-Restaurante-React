@@ -9,7 +9,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 // we need this (addComment) action creator function in order to obtain an action JS object which then  dispatch to the store by calling store.dispatch();
-import { addComment,fetchComments,fetchDishes, fetchPromos } from '../redux/ActionCreators';
+import { postComment,fetchComments,fetchDishes, fetchPromos } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 //this will map redux store state to the props that we will use in our main component
 
@@ -25,8 +25,8 @@ const mapStateToProps = state => { //when you use Connect() at the bottom it wil
 // mapDispatchToProps is something that you will use to provide the action creators as props to your component.
 
  const mapDispatchToProps=(dispatch)=>({    //when you use Connect() at the bottom it will recieve dispatch as it s parameter
-     
-     addComment:(dishId,rating,author,comment)=>dispatch(addComment(dishId,rating,author,comment)),
+  
+     postComment:(dishId,rating,author,comment)=>dispatch(postComment(dishId,rating,author,comment)),
 //now this addComment is available as a prop to main COmp(which will store current changed state).  # if you r confuse with the name justhover over them n you will get info about it .
     
 
@@ -77,7 +77,7 @@ class Main extends Component {
               errMess={this.props.dishes.errMess}
               comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
               commentsErrMess={this.props.comments.errMess}
-              addComment={this.props.addComment}
+              postComment={this.props.postComment}
             />
         );
       };

@@ -31,7 +31,7 @@ class CommentForm extends Component {
         
         // passing parameters to addComment function on submitting the form (yaha se ganga ji nikli hai )
         // 
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     toggleCommentFormModal() {
@@ -160,8 +160,7 @@ function RenderDish({dish}) {
     }
 }
 
-function RenderComments({comments,addComment,dishId}){
-      console.log("add com"+addComment);
+function RenderComments({comments,postComment,dishId}){
     if (comments == null) {
             return (<div></div>)
     }
@@ -187,7 +186,7 @@ function RenderComments({comments,addComment,dishId}){
                     {cmnts}
             </ul>
             
-            <CommentForm  dishId={dishId} addComment={addComment}/>
+            <CommentForm  dishId={dishId} postComment={postComment}/>
         </div>
     )
 }
@@ -233,7 +232,7 @@ const DishDetail = (props) => {
                 </div>
                 <div className="col-12 col-md-5 m-1">
                     <RenderComments comments={props.comments}
-                    addComment={props.addComment}    
+                    postComment={props.postComment}    
                     dishId={props.dish.id}  //we need this as comments passed itself doesnot no for which DIsh they are passed 
                     />
                 </div>

@@ -1,24 +1,60 @@
 
 import *  as ActionTypes from './ActionTypes';
 //now its action creator responsibility to supply it to DISHES reducers
-import { DISHES } from '../shared/dishes';
 
 //inorder to communincate with the server 
 import { baseUrl } from '../shared/baseUrl';
+
 import { actions } from 'react-redux-form';
 
 //creating an action ojecct  that will return a  javascript object
-export const addComment=(dishId,rating ,author,comment)=>({
+export const addComment=(comment)=>({
 
     type:ActionTypes.ADD_COMMENT,
      //contains data to be carried in the action object to the reducer function
-    payload:{
-        dishId:dishId,
-        rating:rating,
-        author:author,
-        comment:comment
-    }
+    payload:{comment}
 });
+
+//thunk to post the comment written int he form to the server
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment
+    };
+    //newComment.id is automatically given by the server so it is not mentioned.
+    newComment.date = new Date().toISOString();
+    
+    return fetch(baseUrl + 'comments', {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error =>  { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); });
+};
+
+
+
+
 //creating a thunk(fetchDishes) that will return a function containing an inner function
 // the inner function of thunk gets access to dispatch here  
 
@@ -87,6 +123,8 @@ export const addComments = (comments) => ({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments
 });
+
+
 //for promotions
 export const fetchPromos = () => (dispatch) => {
     
