@@ -3,6 +3,10 @@ import *  as ActionTypes from './ActionTypes';
 //now its action creator responsibility to supply it to DISHES reducers
 import { DISHES } from '../shared/dishes';
 
+//inorder to communincate with the server 
+import { baseUrl } from '../shared/baseUrl';
+import { actions } from 'react-redux-form';
+
 //creating an action ojecct  that will return a  javascript object
 export const addComment=(dishId,rating ,author,comment)=>({
 
@@ -21,10 +25,10 @@ export const addComment=(dishId,rating ,author,comment)=>({
 export const fetchDishes = () => (dispatch) => {
 
     dispatch(dishesLoading());
+    return fetch(baseUrl+'dishes')   //ones the dishes are obtained then it will be pushed to redux store ;
+    .then(response=>response.json()).then(dishes=>dispatch(addDishes(dishes)))  ;
 
-    setTimeout(() => {
-        dispatch(addDishes(DISHES));
-    }, 2000);
+ 
 }
 
 export const dishesLoading = () => ({
@@ -39,4 +43,45 @@ export const dishesFailed = (errmess) => ({
 export const addDishes = (dishes) => ({
     type: ActionTypes.ADD_DISHES,
     payload: dishes
+});
+
+//setting up thunk to fetch comment 
+
+export const fetchComments = () => (dispatch) => {    
+    return fetch(baseUrl + 'comments')
+    .then(response => response.json())
+    .then(comments => dispatch(addComments(comments)));
+};
+
+export const commentsFailed = (errmess) => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errmess
+});
+
+export const addComments = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+//for promotions
+export const fetchPromos = () => (dispatch) => {
+    
+    dispatch(promosLoading());
+
+    return fetch(baseUrl + 'promotions')
+    .then(response => response.json())
+    .then(promos => dispatch(addPromos(promos)));
+}
+
+export const promosLoading = () => ({
+    type: ActionTypes.PROMOS_LOADING
+});
+
+export const promosFailed = (errmess) => ({
+    type: ActionTypes.PROMOS_FAILED,
+    payload: errmess
+});
+
+export const addPromos = (promos) => ({
+    type: ActionTypes.ADD_PROMOS,
+    payload: promos
 });
