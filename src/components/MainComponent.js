@@ -9,7 +9,7 @@ import Footer from './FooterComponent';
 import { Switch, Route, Redirect,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 // we need this (addComment) action creator function in order to obtain an action JS object which then  dispatch to the store by calling store.dispatch();
-import { postComment,fetchComments,fetchDishes, fetchPromos } from '../redux/ActionCreators';
+import {postfeedback, postComment,fetchComments,fetchDishes, fetchPromos,fetchLeaders } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 //this will map redux store state to the props that we will use in our main component
 
@@ -26,7 +26,7 @@ const mapStateToProps = state => { //when you use Connect() at the bottom it wil
 // mapDispatchToProps is something that you will use to provide the action creators as props to your component.
 
  const mapDispatchToProps=(dispatch)=>({    //when you use Connect() at the bottom it will recieve dispatch as it s parameter
-  
+     postfeedback:(firstname,lastname,telnum,email,agree,contactType,message)=>dispatch(postfeedback(firstname,lastname,telnum,email,agree,contactType,message)),
      postComment:(dishId,rating,author,comment)=>dispatch(postComment(dishId,rating,author,comment)),
 //now this addComment is available as a prop to main COmp(which will store current changed state).  # if you r confuse with the name justhover over them n you will get info about it .
     
@@ -34,9 +34,10 @@ const mapStateToProps = state => { //when you use Connect() at the bottom it wil
 //new prop(fetchDishes which when invoked to will result in call to dispatch fetchDishes thunk)
 fetchDishes: () => { dispatch(fetchDishes())},
 fetchComments: () =>{ dispatch(fetchComments())},
-  fetchPromos: () => {dispatch(fetchPromos())},
+fetchPromos: () => {dispatch(fetchPromos())},
+fetchLeaders: ()=>{dispatch(fetchLeaders())},
 
- resetFeedbackForm:()=>{(dispatch(actions.reset('feedback')))}
+resetFeedbackForm:()=>{(dispatch(actions.reset('feedback')))}
 });
 
 class Main extends Component {
@@ -51,6 +52,7 @@ class Main extends Component {
   this.props.fetchDishes();
   this.props.fetchComments();
   this.props.fetchPromos();
+  this.props.fetchLeaders();
   }
   render() {
       const Homepage=()=>
@@ -65,7 +67,9 @@ class Main extends Component {
           promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
           promosLoading={this.props.promotions.isLoading}
           promosErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+          leadersLoading={this.props.leaders.isLoading}
+          leadersErrMess={this.props.leaders.errMess}
       />
            
         );                //match.params.dishId is a string which is converted to a base 10 integer
@@ -85,20 +89,21 @@ class Main extends Component {
       const Aboutus=()=>
       {
         return (    
-          <About leaders={this.props.leaders}/>
+          <About leaders={this.props.leaders.leaders}/>
         );
       }
     return (
       <div>
         <Header />
-        <TransitionGroup>
+        <TransitionGroup // for tansition of pages in a single page application
+        >
           <CSSTransition key={this.props.location.key} classNames="page" timeout={300} >
           <Switch>
          <Route path="/home" component={Homepage} />
          <Route exact path="/menu" component={()=> <Menu dishes={this.props.dishes}/>} //(exact) means the path should eaxctly match with menu nothing beyond menu) 
          />
         <Route path='/menu/:dishId' component={DishWithId}  />
-         <Route  exact path="/contactus" component={()=><Contact resetFeedbackForm={this.props.resetFeedbackForm}/>} //another way of passing a Comp. if you dont have any props to use in it 
+         <Route  exact path="/contactus" component={()=><Contact resetFeedbackForm={this.props.resetFeedbackForm} postfeedback={this.props.postfeedback}/>} //another way of passing a Comp. if you dont have any props to use in it 
          />
          <Route path="/aboutus" component={Aboutus}/>
          <Redirect to="/home" // if you didnt find above route paths the you will be directed to home 

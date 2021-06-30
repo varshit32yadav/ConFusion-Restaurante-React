@@ -19,9 +19,11 @@ class Contact extends Component
     
     handleSubmit(values){
         //JSON.stringify(this.state) gives you the current updated state of the react component
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert("current state is :" + JSON.stringify(values));
+        //console.log('Current State is: ' + JSON.stringify(values));
+        //alert("current state is :" + JSON.stringify(values));
+        this.props.postfeedback(values.firstname,values.lastname,values.telnum,values.email,values.agree,values.contactType,values.message);
         this.props.resetFeedbackForm();
+
         
         // event.preventDefault(); to prevent from going to the next page after submission we us this
     } 

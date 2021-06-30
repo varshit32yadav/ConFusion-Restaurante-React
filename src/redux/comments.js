@@ -10,9 +10,6 @@ export const  Comments=(state={errMess:null,comments:[]},action)=>{
 
         case ActionTypes.ADD_COMMENT:     //when case matches reducer function does something to the state
         var comment = action.payload;
-        comment.id = state.comments.length;
-        comment.date = new Date().toISOString();
-        console.log("Comment: ", comment);
         return {...state,comments:state.comments.concat(comment)}; //so now the new object(comment) in the array of object(COMMENTS) list is added. 
             //we r only adding in the memory so when u restatr your applicaton all the comments that you will add to the form willbe lost completely .We will handle that later 
 
