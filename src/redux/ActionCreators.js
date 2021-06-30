@@ -5,7 +5,6 @@ import *  as ActionTypes from './ActionTypes';
 //inorder to communincate with the server 
 import { baseUrl } from '../shared/baseUrl';
 
-import { actions } from 'react-redux-form';
 
 //creating an action ojecct  that will return a  javascript object
 export const addComment=(comment)=>({
@@ -16,7 +15,7 @@ export const addComment=(comment)=>({
 });
 
 //thunk to post the comment written int he form to the server
-export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+export const postComment = (dishId, rating, author, comment) => (dispatch) => { 
 
     const newComment = {
         dishId: dishId,
@@ -209,8 +208,8 @@ export const fetchLeaders=()=>(dispatch)=>{
        throw error;
         }
     },error=>{ var errmess=new Error(error.message); 
-     throw errmess;}).
-     then(response=>response.json())
+     throw errmess;})
+     .then(response=>response.json())
      .then(leaders=>dispatch(addLeaders(leaders)))
      .catch(error=>dispatch(leadersFailed(error.message))) ;
 

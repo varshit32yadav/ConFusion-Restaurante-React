@@ -42,9 +42,7 @@ resetFeedbackForm:()=>{(dispatch(actions.reset('feedback')))}
 
 class Main extends Component {
 
-  constructor(props){
-    super(props);
-  }
+ 
  /*this lifecycle method gets executed as soon as this component gets mounted in the view of the application.
  so we will use this component to fetch (fetchDshes as a prop in the Main comp) 
  when we need to fetch some data fro our app. this methid is good to go for it  */
